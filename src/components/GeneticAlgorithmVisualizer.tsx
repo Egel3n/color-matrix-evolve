@@ -11,6 +11,7 @@ import { Play, Pause, RotateCcw } from 'lucide-react';
 
 const GeneticAlgorithmVisualizer = () => {
   const [isRunning, setIsRunning] = useState(false);
+  const [speed, setSpeed] = useState(100); // milliseconds between generations
   const [algorithmState, setAlgorithmState] = useState<AlgorithmState>({
     generation: 0,
     bestBoard: [],
@@ -33,7 +34,7 @@ const GeneticAlgorithmVisualizer = () => {
     setIsRunning(true);
     console.log('🚀 Starting Genetic Algorithm...');
     
-    const id = runGeneticAlgorithm(gaParams, (state) => {
+    const id = runGeneticAlgorithm(gaParams, speed, (state) => {
       setAlgorithmState(state);
       if (state.isComplete) {
         setIsRunning(false);
@@ -42,7 +43,7 @@ const GeneticAlgorithmVisualizer = () => {
     });
     
     setIntervalId(id);
-  }, [isRunning, gaParams]);
+  }, [isRunning, gaParams, speed]);
 
   const stopAlgorithm = useCallback(() => {
     if (intervalId) {
@@ -64,6 +65,17 @@ const GeneticAlgorithmVisualizer = () => {
     });
     console.log('🔄 Algorithm reset');
   }, [stopAlgorithm]);
+
+  // Restart algorithm when speed changes during execution
+  useEffect(() => {
+    if (isRunning && intervalId) {
+      stopAlgorithm();
+      // Small delay to ensure cleanup
+      setTimeout(() => {
+        startAlgorithm();
+      }, 10);
+    }
+  }, [speed]);
 
   useEffect(() => {
     return () => {
@@ -125,6 +137,8 @@ const GeneticAlgorithmVisualizer = () => {
                 <ControlPanel
                   params={gaParams}
                   onParamsChange={setGAParams}
+                  speed={speed}
+                  onSpeedChange={setSpeed}
                   disabled={isRunning}
                 />
               </CardContent>

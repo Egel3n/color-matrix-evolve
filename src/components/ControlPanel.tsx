@@ -8,16 +8,45 @@ import { GAParams } from '@/utils/geneticAlgorithm';
 interface ControlPanelProps {
   params: GAParams;
   onParamsChange: (params: GAParams) => void;
+  speed: number;
+  onSpeedChange: (speed: number) => void;
   disabled: boolean;
 }
 
-const ControlPanel: React.FC<ControlPanelProps> = ({ params, onParamsChange, disabled }) => {
+const ControlPanel: React.FC<ControlPanelProps> = ({ 
+  params, 
+  onParamsChange, 
+  speed, 
+  onSpeedChange, 
+  disabled 
+}) => {
   const updateParam = (key: keyof GAParams, value: number) => {
     onParamsChange({ ...params, [key]: value });
   };
 
+  const getSpeedLabel = (speed: number) => {
+    if (speed <= 50) return 'Very Slow';
+    if (speed <= 100) return 'Slow';
+    if (speed <= 200) return 'Normal';
+    if (speed <= 500) return 'Fast';
+    return 'Very Fast';
+  };
+
   return (
     <div className="space-y-6">
+      <div className="space-y-2">
+        <Label className="text-white">Speed: {getSpeedLabel(speed)} ({speed}ms)</Label>
+        <Slider
+          value={[speed]}
+          onValueChange={([value]) => onSpeedChange(value)}
+          min={10}
+          max={1000}
+          step={10}
+          disabled={disabled}
+          className="w-full"
+        />
+      </div>
+
       <div className="space-y-2">
         <Label className="text-white">Population Size: {params.populationSize}</Label>
         <Slider

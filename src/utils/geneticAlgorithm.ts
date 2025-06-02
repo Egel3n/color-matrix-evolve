@@ -204,6 +204,7 @@ export function rouletteWheelSelection(population: Individual[]): Individual {
 // Main genetic algorithm runner
 export function runGeneticAlgorithm(
   params: GAParams,
+  speed: number,
   onUpdate: (state: AlgorithmState) => void
 ): NodeJS.Timeout {
   let population = generatePopulation(params.populationSize);
@@ -249,5 +250,5 @@ export function runGeneticAlgorithm(
     generation++;
   };
 
-  return setInterval(evolve, 100); // Run every 100ms for smooth animation
+  return setInterval(evolve, speed);
 }
