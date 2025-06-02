@@ -25,11 +25,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   };
 
   const getSpeedLabel = (speed: number) => {
-    if (speed <= 50) return 'Very Slow';
-    if (speed <= 100) return 'Slow';
+    if (speed <= 50) return 'Very Fast';
+    if (speed <= 100) return 'Fast';
     if (speed <= 200) return 'Normal';
-    if (speed <= 500) return 'Fast';
-    return 'Very Fast';
+    if (speed <= 500) return 'Slow';
+    return 'Very Slow';
   };
 
   return (
