@@ -56,7 +56,7 @@ export function fitness(board: string[][]): number {
   for (let i = 0; i < 5; i++) {
     diagonalColors.add(board[i][i]);
   }
-  if (diagonalColors.size === 5) {
+  if (diagonalColors.size === 1) {
     score += 5;
   }
 
